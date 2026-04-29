@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - ComicVerse</title>
+    <link rel="stylesheet" href="css/all.min.css" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/slick.css" />
+    <link rel="stylesheet" href="css/venobox.min.css" />
+
+    <!--main style file-->
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bangers&family=Roboto:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary: #ff6b6b;
+        --secondary: #4ecdc4;
+        --dark: #292f36;
+        --light: #f7fff7;
+        --accent: #ff9f1c;
+      }
+      /* Checkout Page Styles */
+      .checkout-hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1608889825103-eb5a6f5ad51d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80");
+        background-size: cover;
+        background-position: center;
+        height: 30vh;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: white;
+        margin-bottom: 40px;
+      }
+
+      .checkout-hero h1 {
+        font-family: "Bangers", cursive;
+        font-size: 4rem;
+        letter-spacing: 3px;
+        color: var(--primary);
+        text-shadow: 3px 3px 0 var(--dark);
+      }
+
+      .checkout-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        margin-bottom: 60px;
+      }
+
+      .checkout-form {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .checkout-form h2 {
+        font-family: "Bangers", cursive;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+        color: var(--dark);
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+        transition: border-color 0.3s;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary);
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .payment-methods {
+        margin: 30px 0;
+      }
+
+      .payment-method {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+
+      .payment-method:hover {
+        border-color: var(--primary);
+      }
+
+      .payment-method.active {
+        border-color: var(--primary);
+        background-color: rgba(255, 107, 107, 0.05);
+      }
+
+      .payment-method input {
+        margin-right: 15px;
+      }
+
+      .payment-method i {
+        font-size: 1.5rem;
+        margin-right: 15px;
+        color: var(--dark);
+      }
+
+      .payment-method .payment-info {
+        flex-grow: 1;
+      }
+
+      .payment-method h3 {
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+      }
+
+      .payment-method p {
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      .card-details {
+        margin-top: 20px;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .card-details.active {
+        display: block;
+      }
+
+      .card-icons {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .card-icons img {
+        height: 30px;
+        filter: grayscale(100%);
+        opacity: 0.7;
+      }
+
+      .card-icons img.active {
+        filter: grayscale(0%);
+        opacity: 1;
+      }
+
+      .checkout-summary {
+        background-color: white;
+        border-radius: 10px;
+        padding: 30px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        align-self: flex-start;
+        position: sticky;
+        top: 100px;
+      }
+
+      .checkout-summary h2 {
+        font-family: "Bangers", cursive;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        font-size: 1.8rem;
+      }
+
+      .order-items {
+        margin-bottom: 20px;
+      }
+
+      .order-item {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .order-item-info {
+        display: flex;
+      }
+
+      .order-item img {
+        width: 60px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 5px;
+        margin-right: 15px;
+      }
+
+      .order-item-title {
+        font-weight: 500;
+      }
+
+      .order-item-price {
+        font-weight: bold;
+      }
+
+      .summary-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 15px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .summary-total {
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 20px 0;
+      }
+
+      .place-order-btn {
+        width: 100%;
+        padding: 15px;
+        background-color: var(--primary);
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-weight: bold;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .place-order-btn:hover {
+        background-color: var(--accent);
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: var(--primary);
+        color: white;
+        padding: 12px 30px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s;
+        border: none;
+        cursor: pointer;
+        font-size: 1rem;
+      }
+
+      .btn:hover {
+        background-color: var(--accent);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--dark);
+        color: white;
+        padding: 60px 0 20px;
+      }
+
+      .footer-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-col h3 {
+        font-family: "Bangers", cursive;
+        letter-spacing: 1px;
+        margin-bottom: 20px;
+        color: var(--primary);
+        font-size: 1.5rem;
+      }
+
+      .footer-col ul {
+        list-style: none;
+      }
+
+      .footer-col ul li {
+        margin-bottom: 10px;
+      }
+
+      .footer-col ul li a {
+        color: #ddd;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-col ul li a:hover {
+        color: var(--primary);
+      }
+
+      .social-links {
+        display: flex;
+        gap: 15px;
+      }
+
+      .social-links a {
+        color: white;
+        font-size: 1.2rem;
+        transition: color 0.3s;
+      }
+
+      .social-links a:hover {
+        color: var(--primary);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 20px;
+        border-top: 1px solid #444;
+        color: #aaa;
+        font-size: 0.9rem;
+      }
+
+      /* Success Modal */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 40px;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+        animation: modalFadeIn 0.3s;
+      }
+
+      @keyframes modalFadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .modal-icon {
+        font-size: 4rem;
+        color: var(--primary);
+        margin-bottom: 20px;
+      }
+
+      .modal h2 {
+        font-family: "Bangers", cursive;
+        letter-spacing: 1px;
+        margin-bottom: 15px;
+        font-size: 2rem;
+      }
+
+      .modal p {
+        margin-bottom: 25px;
+        font-size: 1.1rem;
+      }
+
+      /* Mobile Responsiveness */
+      @media (max-width: 992px) {
+        .checkout-container {
+          grid-template-columns: 1fr;
+        }
+
+        .checkout-summary {
+          position: static;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .checkout-hero h1 {
+          font-size: 2.5rem;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+          gap: 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .header-container {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        .logo {
+          margin-bottom: 0;
+          font-size: 1.8rem;
+        }
+
+        nav {
+          display: none;
+        }
+
+        .mobile-menu-btn {
+          display: block;
+        }
+
+        .header-icons {
+          margin-top: 0;
+        }
+
+        .checkout-hero h1 {
+          font-size: 2rem;
+        }
+
+        .order-item {
+          flex-direction: column;
+        }
+
+        .order-item-price {
+          margin-top: 10px;
+          text-align: right;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+      <div class="container">
+        <a class="navbar-brand" href="index.html">Comixo<span>.</span></a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav m-auto mb-2 mt-0 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="#banner">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#about">About</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#new-comics">Comics</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#blog">Blog</a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                data-bs-toggle="modal"
+                data-bs-target="#contact-modal"
+                >Contact</a
+              >
+            </li>
+          </ul>
+          <div class="menu-action d-flex">
+            <div class="action-icon">
+              <a class="menu-icon" href="bookmark.html"
+                ><i class="fa-solid fa-bookmark"></i
+              ></a>
+              <a class="menu-icon" href="cart.html"
+                ><span>2</span><i class="fa-solid fa-cart-shopping"></i
+              ></a>
+              <a
+                data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasRight"
+                aria-controls="offcanvasRight"
+                class="menu-icon mobile-v-show"
+                ><i class="fa-solid fa-magnifying-glass"></i
+              ></a>
+            </div>
+            <a href="#" class="button-secondary">Free Comics</a>
+            <a
+              href="#"
+              class="ham-button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasRight"
+              aria-controls="offcanvasRight"
+            >
+              <div class="hamburger-menu">
+                <div class="nav-line"></div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Checkout Hero -->
+    <section class="checkout-hero">
+      <div class="container">
+        <h1>Checkout</h1>
+      </div>
+    </section>
+
+    <!-- Checkout Content -->
+    <div class="container checkout-container">
+      <div class="checkout-form">
+        <h2>Billing Information</h2>
+        <form id="checkoutForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" class="form-control" required />
+          </div>
+
+          <div class="form-group">
+            <label for="address">Street Address</label>
+            <input type="text" id="address" class="form-control" required />
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" class="form-control" required />
+            </div>
+            <div class="form-group">
+              <label for="zip">ZIP Code</label>
+              <input type="text" id="zip" class="form-control" required />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="country">Country</label>
+            <select id="country" class="form-control" required>
+              <option value="">Select Country</option>
+              <option value="US">United States</option>
+              <option value="UK">United Kingdom</option>
+              <option value="CA">Canada</option>
+              <option value="AU">Australia</option>
+              <option value="JP">Japan</option>
+              <option value="DE">Germany</option>
+              <option value="FR">France</option>
+            </select>
+          </div>
+
+          <h2>Payment Method</h2>
+          <div class="payment-methods">
+            <div class="payment-method active" id="creditCardMethod">
+              <input
+                type="radio"
+                name="paymentMethod"
+                id="creditCard"
+                value="creditCard"
+                checked
+              />
+              <i class="far fa-credit-card"></i>
+              <div class="payment-info">
+                <h3>Credit/Debit Card</h3>
+                <p>Pay securely with your Visa, Mastercard, or other card</p>
+              </div>
+            </div>
+
+            <div class="payment-method" id="codMethod">
+              <input type="radio" name="paymentMethod" id="cod" value="cod" />
+              <i class="fas fa-money-bill-wave"></i>
+              <div class="payment-info">
+                <h3>Cash on Delivery</h3>
+                <p>Pay cash when your order arrives</p>
+              </div>
+            </div>
+
+            <div class="card-details active" id="creditCardDetails">
+              <div class="card-icons">
+                <img src="images/Visa.svg" alt="Visa" class="active" />
+                <img src="images/Mastercard.svg" alt="Mastercard" />
+                <img src="images/apple-original.svg" alt="Apple Pay" />
+                <img src="images/PayPal.png" alt="PayPal" />
+              </div>
+
+              <div class="form-group">
+                <label for="cardNumber">Card Number</label>
+                <input
+                  type="text"
+                  id="cardNumber"
+                  class="form-control"
+                  placeholder="1234 5678 9012 3456"
+                />
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="expiryDate">Expiry Date</label>
+                  <input
+                    type="text"
+                    id="expiryDate"
+                    class="form-control"
+                    placeholder="MM/YY"
+                  />
+                </div>
+                <div class="form-group">
+                  <label for="cvv">CVV</label>
+                  <input
+                    type="text"
+                    id="cvv"
+                    class="form-control"
+                    placeholder="123"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="cardName">Name on Card</label>
+                <input type="text" id="cardName" class="form-control" />
+              </div>
+            </div>
+
+            <div class="card-details" id="codDetails">
+              <p>
+                You'll pay cash when your order arrives. Please have exact
+                change ready.
+              </p>
+              <p>
+                <strong>Note:</strong> A $2.00 cash handling fee will be added
+                to your order total.
+              </p>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="orderNotes">Order Notes (Optional)</label>
+            <textarea
+              id="orderNotes"
+              class="form-control"
+              rows="4"
+              placeholder="Any special instructions for your order..."
+            ></textarea>
+          </div>
+        </form>
+      </div>
+
+      <div class="checkout-summary">
+        <h2>Order Summary</h2>
+
+        <div class="order-items">
+          <div class="order-item">
+            <div class="order-item-info">
+              <img src="images/comic1.png" alt="Batman: Evolution" />
+              <div>
+                <div class="order-item-title">
+                  Super Knight: Next Episode Comics
+                </div>
+                <div>1 × $132.46</div>
+              </div>
+            </div>
+            <div class="order-item-price">$132.46</div>
+          </div>
+
+          <div class="order-item">
+            <div class="order-item-info">
+              <img src="images/popular1.png" alt="Spider-Man: No Way Home" />
+              <div>
+                <div class="order-item-title">
+                  Red Square V: Final Episode Comics
+                </div>
+                <div>2 × $240.64</div>
+              </div>
+            </div>
+            <div class="order-item-price">$481.28</div>
+          </div>
+        </div>
+
+        <div class="summary-row">
+          <span>Subtotal</span>
+          <span>$613.74</span>
+        </div>
+        <div class="summary-row">
+          <span>Shipping</span>
+          <span>FREE</span>
+        </div>
+        <div class="summary-row">
+          <span>Tax</span>
+          <span>$1.04</span>
+        </div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span>$615.14</span>
+        </div>
+
+        <button class="place-order-btn" id="placeOrderBtn">Place Order</button>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-container">
+          <div class="footer-col">
+            <h3>ComicVerse</h3>
+            <p>
+              Your ultimate destination for digital comics. Explore thousands of
+              titles from all major publishers.
+            </p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+              <a href="#"><i class="fab fa-youtube"></i></a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h3>Quick Links</h3>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="comics.html">Comics</a></li>
+              <li><a href="blog.html">Blog</a></li>
+              <li><a href="contact.html">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Categories</h3>
+            <ul>
+              <li><a href="#">Marvel</a></li>
+              <li><a href="#">DC Comics</a></li>
+              <li><a href="#">Manga</a></li>
+              <li><a href="#">Indie Comics</a></li>
+              <li><a href="#">Graphic Novels</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h3>Help</h3>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Shipping</a></li>
+              <li><a href="#">Returns</a></li>
+              <li><a href="#">Account</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="copyright">
+          <p>
+            &copy; 2023 ComicVerse. All rights reserved. All trademarks are
+            property of their respective owners.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Success Modal -->
+    <div class="modal" id="successModal">
+      <div class="modal-content">
+        <div class="modal-icon">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <h2>Order Placed Successfully!</h2>
+        <p>
+          Thank you for your purchase. Your order #COMIC12345 has been
+          confirmed. You'll receive an email with your order details shortly.
+        </p>
+        <a href="index.html" class="btn">Back to Home</a>
+      </div>
+    </div>
+
+    <script>
+      // DOM Elements
+      const checkoutForm = document.getElementById("checkoutForm");
+      const placeOrderBtn = document.getElementById("placeOrderBtn");
+      const creditCardMethod = document.getElementById("creditCardMethod");
+      const codMethod = document.getElementById("codMethod");
+      const creditCardDetails = document.getElementById("creditCardDetails");
+      const codDetails = document.getElementById("codDetails");
+      const cardIcons = document.querySelectorAll(".card-icons img");
+      const successModal = document.getElementById("successModal");
+
+      // Payment Method Toggle
+      creditCardMethod.addEventListener("click", function () {
+        creditCardMethod.classList.add("active");
+        codMethod.classList.remove("active");
+        creditCardDetails.classList.add("active");
+        codDetails.classList.remove("active");
+        document.getElementById("creditCard").checked = true;
+      });
+
+      codMethod.addEventListener("click", function () {
+        codMethod.classList.add("active");
+        creditCardMethod.classList.remove("active");
+        codDetails.classList.add("active");
+        creditCardDetails.classList.remove("active");
+        document.getElementById("cod").checked = true;
+      });
+
+      // Card Icon Selection
+      cardIcons.forEach((icon) => {
+        icon.addEventListener("click", function () {
+          cardIcons.forEach((i) => i.classList.remove("active"));
+          this.classList.add("active");
+        });
+      });
+
+      // Form Validation
+      function validateForm() {
+        const firstName = document.getElementById("firstName").value;
+        const lastName = document.getElementById("lastName").value;
+        const email = document.getElementById("email").value;
+        const phone = document.getElementById("phone").value;
+        const address = document.getElementById("address").value;
+        const city = document.getElementById("city").value;
+        const zip = document.getElementById("zip").value;
+        const country = document.getElementById("country").value;
+
+        if (
+          !firstName ||
+          !lastName ||
+          !email ||
+          !phone ||
+          !address ||
+          !city ||
+          !zip ||
+          !country
+        ) {
+          alert("Please fill in all required fields.");
+          return false;
+        }
+
+        // Validate email format
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+          alert("Please enter a valid email address.");
+          return false;
+        }
+
+        // If credit card is selected, validate card details
+        if (document.getElementById("creditCard").checked) {
+          const cardNumber = document.getElementById("cardNumber").value;
+          const expiryDate = document.getElementById("expiryDate").value;
+          const cvv = document.getElementById("cvv").value;
+          const cardName = document.getElementById("cardName").value;
+
+          if (!cardNumber || !expiryDate || !cvv || !cardName) {
+            alert("Please fill in all credit card details.");
+            return false;
+          }
+
+          // Simple card number validation (just checks length)
+          const cleanedCardNumber = cardNumber.replace(/\s+/g, "");
+          if (cleanedCardNumber.length < 15 || cleanedCardNumber.length > 16) {
+            alert("Please enter a valid card number.");
+            return false;
+          }
+
+          // Simple expiry date validation
+          const expiryRegex = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
+          if (!expiryRegex.test(expiryDate)) {
+            alert("Please enter a valid expiry date in MM/YY format.");
+            return false;
+          }
+
+          // Simple CVV validation
+          if (cvv.length < 3 || cvv.length > 4) {
+            alert("Please enter a valid CVV (3-4 digits).");
+            return false;
+          }
+        }
+
+        return true;
+      }
+
+      // Place Order Button
+      placeOrderBtn.addEventListener("click", function () {
+        if (validateForm()) {
+          // In a real application, this would send the data to a server
+          // For this demo, we'll just show a success message
+          successModal.style.display = "flex";
+
+          // Reset form (in a real app, this would happen after successful server response)
+          checkoutForm.reset();
+
+          // Scroll to top to show the modal
+          window.scrollTo(0, 0);
+        }
+      });
+
+      // Close modal when clicking outside
+      window.addEventListener("click", function (event) {
+        if (event.target === successModal) {
+          successModal.style.display = "none";
+        }
+      });
+
+      // Mobile Menu Toggle
+      const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+      const nav = document.querySelector("nav");
+
+      mobileMenuBtn.addEventListener("click", () => {
+        nav.style.display = nav.style.display === "block" ? "none" : "block";
+      });
+
+      // Card Number Formatting
+      const cardNumberInput = document.getElementById("cardNumber");
+      if (cardNumberInput) {
+        cardNumberInput.addEventListener("input", function (e) {
+          // Remove all non-digit characters
+          let value = this.value.replace(/\D/g, "");
+
+          // Add space after every 4 digits
+          value = value.replace(/(\d{4})(?=\d)/g, "$1 ");
+
+          // Update the input value
+          this.value = value;
+        });
+      }
+
+      // Expiry Date Formatting
+      const expiryDateInput = document.getElementById("expiryDate");
+      if (expiryDateInput) {
+        expiryDateInput.addEventListener("input", function (e) {
+          // Remove all non-digit and non-slash characters
+          let value = this.value.replace(/[^\d\/]/g, "");
+
+          // Add slash after 2 digits if not already present
+          if (value.length === 2 && !value.includes("/")) {
+            value = value + "/";
+          }
+
+          // Update the input value
+          this.value = value;
+        });
+      }
+
+      // CVV Formatting - only allow digits
+      const cvvInput = document.getElementById("cvv");
+      if (cvvInput) {
+        cvvInput.addEventListener("input", function (e) {
+          this.value = this.value.replace(/\D/g, "");
+        });
+      }
+    </script>
+  </body>
+</html>
